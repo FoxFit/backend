@@ -19,3 +19,5 @@ yarn-error.log
 /.vscode
 .idea
 composer.lock
+.phpstorm.meta.php
+.rnd

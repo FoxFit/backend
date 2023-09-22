@@ -2,37 +2,76 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
+ * @method User create($attributes = [], ?Model $parent = null)
  */
 class UserFactory extends Factory
 {
     /**
-     * Define the model's default state.
+     * The name of the factory's corresponding model.
      *
+     * @var string
+     */
+    protected $model = User::class;
+
+    private function getEmailPrefix(): string
+    {
+        return config('app.email_prefix');
+    }
+
+    /**
      * @return array<string, mixed>
      */
     public function definition(): array
     {
+        $emailPrefix = $this->getEmailPrefix();
+        $first_name = $this->faker->firstName;
+        $last_name = $this->faker->lastName;
+        $full_name = $first_name . ' ' . $last_name;
+        $user_name = $this->faker->userName;
+        $email = $user_name . $emailPrefix;
+
         return [
-            'name' => fake()->name(),
-            'email' => fake()->unique()->safeEmail(),
-            'email_verified_at' => now(),
-            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
-            'remember_token' => Str::random(10),
+            'full_name'         => $full_name,
+            'first_name'        => $first_name,
+            'last_name'         => $last_name,
+            'user_name'         => $user_name,
+            'email'             => $email,
+            'email_verified_at' => null,
+            'password'          => Hash::make('123456'), // password
+            'remember_token'    => null,
         ];
     }
 
-    /**
-     * Indicate that the model's email address should be unverified.
-     */
-    public function unverified(): static
+    public function asUser(string $username, string $password, string $email = null, string $name = null): UserFactory
     {
-        return $this->state(fn (array $attributes) => [
-            'email_verified_at' => null,
-        ]);
+        $emailPrefix = $this->getEmailPrefix();
+
+        if ($email === null) {
+            $validator = Validator::make(['email' => $username], [
+                'email' => 'required|email',
+            ]);
+
+            $email = $username;
+            if (!$validator->passes()) {
+                $email = "{$username}{$emailPrefix}";
+            }
+        }
+
+        // test admin exists.
+        return $this->state(function () use ($username, $password, $email, $name) {
+            return [
+                'user_name' => $username,
+                'full_name' => $name === null ? $username : $name,
+                'email'     => $email,
+                'password'  => Hash::make($password),
+            ];
+        });
     }
 }

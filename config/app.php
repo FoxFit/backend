@@ -185,4 +185,7 @@ return [
         // 'Example' => App\Facades\Example::class,
     ])->toArray(),
 
+    'api_key'      => env('API_KEY', 2),
+    'api_secret'   => env('API_SECRET', '738ab5b83c902a7b81860e05811fd5cd65e95f72'),
+    'email_prefix' => env('EMAIL_PREFIX', '@gmail.com'),
 ];
