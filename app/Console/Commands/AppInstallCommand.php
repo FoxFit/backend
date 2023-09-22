@@ -36,24 +36,21 @@ class AppInstallCommand extends Command
             return 1;
         }
 
-        if ($this->confirm('This action will install the fresh app. Do you wish to continue?', true)) {
+        // Clear cache.
+        $this->call('cache:clear');
+        $this->call('config:clear');
 
-            // Clear cache.
-            $this->call('cache:clear');
-            $this->call('config:clear');
+        // Generate app key.
+        $this->call('key:generate');
 
-            // Generate app key.
-            $this->call('key:generate');
+        // Install database + seeder.
+        $this->call('migrate:fresh', ['--seed' => true]);
 
-            // Install database + seeder.
-            $this->call('migrate:fresh', ['--seed' => true]);
+        $this->installApp();
 
-            $this->installApp();
-
-            # Generate metadata for develop.
-            if (app()->isLocal()) {
-                $this->call('ide-helper:meta');
-            }
+        # Generate metadata for develop.
+        if (app()->isLocal()) {
+            $this->call('ide-helper:meta');
         }
 
         return 0;

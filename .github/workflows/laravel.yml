@@ -36,6 +36,7 @@ jobs:
         run: |
           cp .env.example .env
           php artisan key:generate
+          php artisan app:install
 
       - name: Execute tests (Unit and Feature tests) via PHPUnit
         run: vendor/bin/phpunit
