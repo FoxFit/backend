@@ -10,9 +10,4 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 interface Resource extends Entity
 {
     public function userId(): int;
-
-    /**
-     * @return User|BelongsTo
-     */
-    public function user();
 }
