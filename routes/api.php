@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\ExcelController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,6 +23,8 @@ Route::group(['prefix' => 'auth'], function ($router) {
     Route::group(['middleware' => ['auth:api']], function ($router) {
         $router->get('logout', [AuthController::class, 'logout'])->name('logout');
         $router->get('profile', [AuthController::class, 'profile'])->name('profile');
+        Route::resource('user', UserController::class);
+        $router->post('import-user', [ExcelController::class, 'importExcelUser'])->name('importUser');
     });
 });
 
