@@ -84,7 +84,8 @@ class UserController extends ApiController
         $user = User::find($id);
         if ($user instanceof User) {
             $user->delete();
+            return $this->success(['id' => $id]);
         }
-        return $this->success(['id' => $id]);
+        return $this->error('Cannot find the user');
     }
 }
