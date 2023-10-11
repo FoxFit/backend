@@ -17,6 +17,7 @@ class AuthApiTest extends TestCase
     public const API_REGISTER = '/api/auth/register';
     public const API_LOGIN = '/api/auth/login';
     public const API_PROFILE = '/api/auth/profile';
+    public const API_CHECK = '/api/auth/check';
     public const API_LOGOUT = '/api/auth/logout';
 
     public function testRegisterSuccess(): array
@@ -159,6 +160,32 @@ class AuthApiTest extends TestCase
                     'created_at',
                     'updated_at',
                 ],
+                'message',
+                'error',
+            ]);
+
+        return [$user];
+    }
+
+    /**
+     * @depends testLoginSuccess
+     * @param array $params
+     * @return array
+     */
+    public function testCheckSuccess(array $params): array
+    {
+        [$user] = $params;
+
+        $uri = self::API_CHECK;
+
+        $request = Request::create($uri);
+
+        $httpResult = $this->actingAs($user, 'api')
+            ->json('GET', $uri, $request->toArray());
+        $httpResult->assertStatus(Response::HTTP_OK)
+            ->assertJsonStructure([
+                'status',
+                'data' => [],
                 'message',
                 'error',
             ]);

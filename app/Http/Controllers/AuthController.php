@@ -91,6 +91,19 @@ class AuthController extends ApiController
     }
 
     /**
+     * Check valid user (uses when user navigate on frontend).
+     *
+     * @return JsonResponse
+     */
+    public function check(): JsonResponse
+    {
+        if (!request()->user()) {
+            return $this->error('', 403);
+        }
+        return $this->success();
+    }
+
+    /**
      * Logout user.
      *
      * @return JsonResponse
