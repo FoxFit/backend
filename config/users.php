@@ -11,6 +11,13 @@ return [
         'username' => 'admin',
     ],
     [
+        'email'    => 'demo@fit.com',
+        'password' => 'demo',
+        'name'     => 'demo',
+        'role'     => UserRole::SUPER_ADMIN_USER,
+        'username' => 'demo',
+    ],
+    [
         'email'    => 'test@fit.com',
         'password' => '123456',
         'name'     => 'test',

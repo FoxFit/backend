@@ -10,6 +10,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Hash;
+use Prettus\Repository\Exceptions\RepositoryException;
 use Prettus\Validator\Exceptions\ValidatorException;
 
 class AuthController extends ApiController
@@ -36,6 +37,9 @@ class AuthController extends ApiController
         return $this->success($data);
     }
 
+    /**
+     * @throws RepositoryException
+     */
     public function login(LoginRequest $request): JsonResponse
     {
         $data = $request->validated();
@@ -47,10 +51,10 @@ class AuthController extends ApiController
         }
 
         /** @var User $user */
-        $user = $this->repository->getByEmail( $data['email']);
+        $user = $this->repository->getByUsername( $data['user_name']);
 
         if (!$user) {
-            return $this->error(__('auth.email.not_exist'), Response::HTTP_FORBIDDEN);
+            return $this->error(__('auth.account.not_exist'), Response::HTTP_FORBIDDEN);
         }
 
         if (!Hash::check($data['password'], $user->password)) {

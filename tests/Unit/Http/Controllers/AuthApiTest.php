@@ -72,8 +72,8 @@ class AuthApiTest extends TestCase
         $uri = self::API_LOGIN;
 
         $userData = [
-            'email'    => $user->email,
-            'password' => '123456',
+            'user_name' => $user->user_name,
+            'password'  => '123456',
         ];
 
         $request = LoginRequest::create($uri, 'POST', $userData);
@@ -106,8 +106,8 @@ class AuthApiTest extends TestCase
         $uri = self::API_LOGIN;
 
         $userData = [
-            'email'    => $user->email,
-            'password' => '333333',
+            'user_name' => $user->user_name,
+            'password'  => '333333',
         ];
 
         $request = LoginRequest::create($uri, 'POST', $userData);

@@ -4,8 +4,8 @@ return [
     'logout' => [
         'success' => 'Log out successfully.',
     ],
-    'email' => [
-        'not_exist' => 'Email does not exists.',
+    'account' => [
+        'not_exist' => 'Account does not exists.',
     ],
     'password' => [
         'incorrect' => 'Password is incorrect.',

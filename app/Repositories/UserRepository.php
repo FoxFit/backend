@@ -25,4 +25,14 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
 
         return $this->parserResult($model);
     }
+
+    public function getByUsername(string $value, array $columns = ['*'])
+    {
+        $this->applyCriteria();
+        $this->applyScope();
+        $model = $this->model->where('user_name', '=', $value)->first($columns);
+        $this->resetModel();
+
+        return $this->parserResult($model);
+    }
 }

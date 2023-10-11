@@ -12,7 +12,7 @@ use Prettus\Repository\Exceptions\RepositoryException;
 interface UserRepositoryInterface
 {
     /**
-     * Find data by field and value
+     * Find user by email.
      *
      * @param string $value
      * @param array $columns
@@ -20,4 +20,14 @@ interface UserRepositoryInterface
      * @throws RepositoryException
      */
     public function getByEmail(string $value, array $columns = ['*']);
+
+    /**
+     * Find user by user_name.
+     *
+     * @param string $value
+     * @param array $columns
+     * @return Collection
+     * @throws RepositoryException
+     */
+    public function getByUsername(string $value, array $columns = ['*']);
 }
