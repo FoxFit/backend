@@ -75,7 +75,8 @@ class AuthController extends ApiController
             'token_type' => 'Bearer',
             'expires_at' => Carbon::parse(
                 $tokenResult->token->expires_at
-            )->toDateTimeString()
+            )->toDateTimeString(),
+            'user' => $user,
         ]);
     }
 
