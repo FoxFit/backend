@@ -30,6 +30,8 @@ class UserSeeder extends Seeder
                 $user['role'] ?? UserRole::NORMAL_USER
             );
         }
+
+        $this->generateFakeUser();
     }
 
     private function createUser(string $userName, string $password, string $email, string $name, string $role): void
@@ -40,9 +42,20 @@ class UserSeeder extends Seeder
             return;
         }
 
+        /** @var User $user */
         $user = User::factory()
             ->asUser($userName, $password, $email, $name)
             ->create();
         $user->assignRole($role);
+    }
+
+    private function generateFakeUser(): void
+    {
+        // Create 100 normal users.
+        for ($i = 0; $i < 100; $i++) {
+            /** @var User $fakeUser */
+            $fakeUser = User::factory()->create();
+            $fakeUser->assignRole(UserRole::NORMAL_USER);
+        }
     }
 }

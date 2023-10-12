@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Hash;
@@ -46,14 +47,18 @@ class UserFactory extends Factory
             'email_verified_at' => null,
             'password'          => Hash::make('123456'), // password
             'remember_token'    => null,
+            'last_login_at'     => Carbon::now(),
         ];
     }
 
-    public function asUser(string $username, string $password, string $email = null, string $name = null): UserFactory
+    public function asUser(string $username, string $password,
+                           string $email = null, string $name = null,
+                           string $firstName = null, string $lastName = null): UserFactory
     {
         $emailPrefix = $this->getEmailPrefix();
 
-        if ($email === null) {
+        if ($email === null)
+        {
             $validator = Validator::make(['email' => $username], [
                 'email' => 'required|email',
             ]);
@@ -65,10 +70,13 @@ class UserFactory extends Factory
         }
 
         // test admin exists.
-        return $this->state(function () use ($username, $password, $email, $name) {
+        return $this->state(function () use ($username, $password, $email, $name, $firstName, $lastName)
+        {
             return [
                 'user_name' => $username,
                 'full_name' => $name === null ? $username : $name,
+                'first_name' => $firstName === null ? $username : $firstName,
+                'last_name' => $lastName === null ? $username : $lastName,
                 'email'     => $email,
                 'password'  => Hash::make($password),
             ];
