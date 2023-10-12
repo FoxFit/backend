@@ -2,20 +2,52 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Users\IndexRequest;
+use App\Http\Resources\Users\UserItemCollection;
 use App\Models\User;
+use App\Repositories\Contracts\UserRepositoryInterface;
+use App\Support\AppConstant;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Http\Request;
 
 class UserController extends ApiController
 {
+    private UserRepositoryInterface $userRepository;
+
+    public function __construct(UserRepositoryInterface $userRepository)
+    {
+        $this->userRepository = $userRepository;
+    }
+
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index(IndexRequest $request)
     {
-        $limit = $request->has('limit')? $request->get('limit') : 20;
-        $offset = $request->has('offset')? $request->get('offset') : 0;
-        $data = User::offset($offset)->limit($limit)->get();
-        return $this->success($data);
+        $params = $request->validated();
+
+        $from = 0;
+        $to = 25;
+
+        if (array_key_exists(AppConstant::SEARCH_FROM, $params)
+            && array_key_exists(AppConstant::SEARCH_TO, $params)) {
+            $from = $params[AppConstant::SEARCH_FROM];
+            $to = $params[AppConstant::SEARCH_TO];
+        }
+
+        $page = AppConstant::getCurrentPage($from, $to);
+        $perPage = AppConstant::getPerPage($from, $to);
+
+        /** @var LengthAwarePaginator $data */
+        $data = $this->userRepository->getAll($params, $perPage, $page);
+        $total = $data->total();
+        $current = count($data);
+
+        return response()->json(new UserItemCollection($data), 200, [
+            'X-Total-Count' => "items $from-$current/$total",
+            'Content-Range' => "items $from-$current/$total",
+            'Access-Control-Expose-Headers' => 'Content-Range',
+        ]);
     }
 
     /**

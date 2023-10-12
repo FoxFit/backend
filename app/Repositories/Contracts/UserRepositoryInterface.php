@@ -30,4 +30,14 @@ interface UserRepositoryInterface
      * @throws RepositoryException
      */
     public function getByUsername(string $value, array $columns = ['*']);
+
+    /**
+     * Get all users.
+     *
+     * @param array $params
+     * @param int $perPage
+     * @param int $page
+     * @return mixed
+     */
+    public function getAll(array $params, int $perPage, int $page);
 }

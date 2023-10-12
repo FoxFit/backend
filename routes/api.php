@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CustomerController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ExcelController;
@@ -29,5 +30,8 @@ Route::group(['prefix' => 'auth'], function ($router) {
     });
 });
 
+Route::group(['middleware' => ['auth:api']], function ($router) {
+    $router->get('customers', [UserController::class, 'index'])->name('customers');
+});
 
 

@@ -11,6 +11,25 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 
+/**
+ * @property int $id
+ * @property string $email
+ * @property string $user_name
+ * @property string $full_name
+ * @property string $first_name
+ * @property string $last_name
+ * @property string $email_verified_at
+ * @property string $password
+ * @property string $confirmation_code
+ * @property string $confirmed
+ * @property string $timezone
+ * @property string $last_login_at
+ * @property string $last_login_ip
+ * @property string $deleted_at
+ * @property string $remember_token
+ * @property string $created_at
+ * @property string $updated_at
+ */
 class User extends Authenticatable implements \App\Contracts\User
 {
     use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
