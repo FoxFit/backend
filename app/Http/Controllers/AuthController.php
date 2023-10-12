@@ -9,6 +9,7 @@ use App\Repositories\Contracts\UserRepositoryInterface;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Prettus\Repository\Exceptions\RepositoryException;
 use Prettus\Validator\Exceptions\ValidatorException;
@@ -97,9 +98,12 @@ class AuthController extends ApiController
      */
     public function check(): JsonResponse
     {
-        if (!request()->user()) {
-            return $this->error('', 403);
+        $check = Auth::guard('api')->check();
+
+        if (!$check) {
+            return $this->error(__('auth.account.token_expired'), 403);
         }
+
         return $this->success();
     }
 

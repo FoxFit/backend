@@ -194,6 +194,33 @@ class AuthApiTest extends TestCase
     }
 
     /**
+     * No user login.
+     *
+     * @depends testCheckSuccess
+     * @param array $params
+     * @return array
+     */
+    public function testCheckFail(array $params): array
+    {
+        [$user] = $params;
+
+        $uri = self::API_CHECK;
+
+        $request = Request::create($uri);
+
+        $httpResult = $this->json('GET', $uri, $request->toArray());
+        $httpResult->assertStatus(Response::HTTP_FORBIDDEN)
+            ->assertContent(json_encode([
+                'status'  => 'failed',
+                'data'    => [],
+                'message' => null,
+                'error'   => __('auth.account.token_expired'),
+            ]));
+
+        return [$user];
+    }
+
+    /**
      * @depends testProfileSuccess
      * @param array $params
      * @return array

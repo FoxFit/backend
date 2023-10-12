@@ -21,10 +21,11 @@ Route::group(['prefix' => 'auth'], function ($router) {
     $router->post('login', [AuthController::class, 'login'])->name('login');
     $router->post('register', [AuthController::class, 'register'])->name('register');
 
+    $router->get('check', [AuthController::class, 'check'])->name('check');
+
     Route::group(['middleware' => ['auth:api']], function ($router) {
         $router->get('logout', [AuthController::class, 'logout'])->name('logout');
         $router->get('profile', [AuthController::class, 'profile'])->name('profile');
-        $router->get('check', [AuthController::class, 'check'])->name('check');
         Route::resource('user', UserController::class);
         $router->post('import-user', [ExcelController::class, 'importExcelUser'])->name('importUser');
     });
