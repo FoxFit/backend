@@ -42,6 +42,9 @@ class IndexRequest extends FormRequest
             }
         }
 
+        $result[AppConstant::SEARCH_FROM] = 0;
+        $result[AppConstant::SEARCH_TO] = 15;
+
         if (array_key_exists('range', $data)) {
             $rangeArr = json_decode($data['range'], true);
             if (count($rangeArr) == 2) {
@@ -51,6 +54,9 @@ class IndexRequest extends FormRequest
                 }
             }
         }
+
+        $result['page'] = AppConstant::getCurrentPage($result[AppConstant::SEARCH_FROM],$result[AppConstant::SEARCH_TO]);
+        $result['perPage'] = AppConstant::getPerPage($result[AppConstant::SEARCH_FROM], $result[AppConstant::SEARCH_TO]);
 
         return $result;
     }

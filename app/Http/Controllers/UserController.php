@@ -26,20 +26,10 @@ class UserController extends ApiController
     {
         $params = $request->validated();
 
-        $from = 0;
-        $to = 25;
-
-        if (array_key_exists(AppConstant::SEARCH_FROM, $params)
-            && array_key_exists(AppConstant::SEARCH_TO, $params)) {
-            $from = $params[AppConstant::SEARCH_FROM];
-            $to = $params[AppConstant::SEARCH_TO];
-        }
-
-        $page = AppConstant::getCurrentPage($from, $to);
-        $perPage = AppConstant::getPerPage($from, $to);
+        $from = $params[AppConstant::SEARCH_FROM];
 
         /** @var LengthAwarePaginator $data */
-        $data = $this->userRepository->getAll($params, $perPage, $page);
+        $data = $this->userRepository->getAll($params, $params['perPage'], $params['page']);
         $total = $data->total();
         $current = count($data);
 

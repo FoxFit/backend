@@ -15,11 +15,12 @@ class AppConstant
 
     public const SEARCH_SORT = 'sort';
     public const SEARCH_SORT_BY = 'sort_by';
-    public const SEARCH_FILTER_ORDER = 'has_ordered';
     public const SEARCH_FILTER_FIRST_SEEN = 'first_seen';
+    public const SEARCH_FILTER_LAST_SEEN = 'last_seen';
 
     public const SEARCH_FILTER_CONVERT = [
         self::SEARCH_FILTER_FIRST_SEEN => 'created_at',
+        self::SEARCH_FILTER_LAST_SEEN => 'last_login_at',
     ];
 
     /**
