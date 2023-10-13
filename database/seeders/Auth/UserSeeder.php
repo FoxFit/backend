@@ -4,6 +4,7 @@ namespace Database\Seeders\Auth;
 
 use App\Models\User;
 use App\Support\UserRole;
+use Database\Factories\UserProfileFactory;
 use Illuminate\Database\Seeder;
 
 class UserSeeder extends Seeder
@@ -44,6 +45,7 @@ class UserSeeder extends Seeder
 
         /** @var User $user */
         $user = User::factory()
+            ->has(UserProfileFactory::new(), 'profile')
             ->asUser($userName, $password, $email, $name)
             ->create();
         $user->assignRole($role);
@@ -52,9 +54,11 @@ class UserSeeder extends Seeder
     private function generateFakeUser(): void
     {
         // Create 100 normal users.
-        for ($i = 0; $i < 100; $i++) {
+        for ($i = 0; $i < 50; $i++) {
             /** @var User $fakeUser */
-            $fakeUser = User::factory()->create();
+            $fakeUser = User::factory()
+                ->has(UserProfileFactory::new(), 'profile')
+                ->create();
             $fakeUser->assignRole(UserRole::NORMAL_USER);
         }
     }

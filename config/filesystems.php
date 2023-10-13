@@ -56,6 +56,12 @@ return [
             'throw' => false,
         ],
 
+        'generate' => [
+            'driver'     => 'local',
+            'root'       => public_path('files'),
+            'url'        => env('APP_URL') . '/files',
+            'visibility' => 'public',
+        ],
     ],
 
     /*

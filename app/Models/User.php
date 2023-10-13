@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Traits\HasUser;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -29,6 +30,7 @@ use Spatie\Permission\Traits\HasRoles;
  * @property string $remember_token
  * @property string $created_at
  * @property string $updated_at
+ * @property UserProfile $profile
  */
 class User extends Authenticatable implements \App\Contracts\User
 {
@@ -81,5 +83,10 @@ class User extends Authenticatable implements \App\Contracts\User
     protected static function newFactory(): UserFactory
     {
         return UserFactory::new();
+    }
+
+    public function profile(): HasOne
+    {
+        return $this->hasOne(UserProfile::class, 'id', 'id');
     }
 }
